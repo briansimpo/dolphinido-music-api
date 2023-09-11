@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: dolphinido-app
+        expose:
+            - 8000
+        environment:
+            - CONTAINER_ROLE=app
+        volumes:
+            - storage:/var/www/html/storage
+        networks:
+            - dolphinido
+        depends_on:
+            - postgres
+    
+    queue:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: dolphinido-queue
+        environment:
+            - CONTAINER_ROLE=queue
+        networks:
+            - dolphinido
+        depends_on:
+            - postgres
+            - app
+            
+    postgres:
+        image: postgres:14.4-alpine
+        container_name: dolphinido-postgres
+        environment:
+            - POSTGRES_DB=${DB_DATABASE}
+            - POSTGRES_USER=${DB_USERNAME}
+            - POSTGRES_PASSWORD=${DB_PASSWORD}
+        volumes:
+            - postgres:/var/lib/postgresql/data/
+        networks:
+            - dolphinido
+            
+    nginx:
+        build:
+            context: ./nginx
+            dockerfile: Dockerfile
+        container_name: dolphinido-nginx
+        volumes:
+            - storage:/var/www/html/storage
+        ports:
+            - 8080:8080
+            - 443:443
+        networks:
+            - dolphinido
+        depends_on:
+            - app
+
+networks:
+    dolphinido:
+        driver: bridge
+
+volumes:
+    storage:
+        driver: local
+    postgres:
+        driver: local  

@@ -1,0 +1,26 @@
+# python
+*.pyc
+*__pycache__
+.pytest_cache
+venv
+
+# environment
+.env
+!.env.example
+
+# npm
+node_modules
+package-lock.json
+
+# ide
+.idea
+.vscode
+**/*.DS_Store
+
+# database
+dolphinido.sqlite3
+
+# compiled assets
+storage/compiled
+storage/public
+
