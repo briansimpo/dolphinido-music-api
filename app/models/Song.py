@@ -9,7 +9,7 @@ from app.builders import HasBuilder, SongBuilder
 class Song(Model, UUIDPrimaryKeyMixin, HasBuilder):
 
     __fillable__ = [
-        'id',  'title', 'file', 'size', 'bitrate', 'duration', 'is_free', 'is_published', 
+        'id',  'title', 'file', 'hash', 'size', 'bitrate', 'duration', 'is_free', 'is_published', 
         'release_date', 'cover_image', 'lyrics', 'artist_id', 'genre_id', 'album_id'
     ]
 

@@ -4,7 +4,11 @@ from .WorkFilterMixin import WorkFilterMixin
 
 class SongRepository(Repository, WorkFilterMixin):
 
-
+    def get_by_hash(self, hash: str):
+        return self.query().with_meta()\
+            .where("songs.hash", hash)\
+            .first()
+    
     def get_by_file(self, file_path: str):
         return self.query().with_meta()\
             .where("songs.file", file_path)\

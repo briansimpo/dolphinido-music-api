@@ -2,22 +2,19 @@ from masonite.controllers import Controller
 from masonite.request import Request
 from masonite.response import Response
 from masonite.queues import Queue
-from masonitedolphinido.dolphinido import Dolphinido
 
 from app.models import Song
 from app.jobs import Fingerprint
 from app.repositories import SongRepository
 from app.services import SongFileService, SongImageService
-from app.config.uploads import STORAGE_DIR
 
 
 class SongsController(Controller):
 
-    def __init__(self, song_repository: SongRepository, file_service: SongFileService, image_service: SongImageService, dolphinido: Dolphinido):
+    def __init__(self, song_repository: SongRepository, file_service: SongFileService, image_service: SongImageService):
         self.song_repository = song_repository
         self.file_service = file_service
         self.image_service = image_service
-        self.dolphinido = dolphinido
 
     def index(self, request: Request, response: Response):
         user = request.user()
@@ -33,15 +30,16 @@ class SongsController(Controller):
         uploaded_file = request.input("song_file")
         uploaded_image = request.input("cover_image")
 
-        song_file = self.file_service.upload(uploaded_file)
-        audio_exists = self.dolphinido.audio_exists(STORAGE_DIR + song_file)
+        song_file, song_hash = self.file_service.upload(uploaded_file)
+        audio = self.song_repository.get_by_hash(song_hash)
 
-        if audio_exists:
+        if audio:
             self.file_service.delete(song_file)
             return response.json({"message": "song already exists"}, 302)
 
         song = Song.create({
             "artist_id": user.id,
+            "hash": song_hash,
             "title": request.input("title"),
             "release_date": request.input("release_date"),
             "album_id": request.input("album") or None,
@@ -61,7 +59,6 @@ class SongsController(Controller):
 
         song.update({
             "title": request.input("title"),
-            "track": request.input("track"),
             "release_date": request.input("release_date"),
             "album_id": request.input("album") or None,
             "genre_id": request.input("genre")
