@@ -1,4 +1,6 @@
 import datetime
+from masonite.environment import env
+from urllib.parse import urlparse
 from country_list import countries_for_language
 
 def get_country_list():
@@ -36,3 +38,11 @@ def format_bitrate(bitrate):
         return int(round(bitrate))
     else:
         return int(round(bitrate / 1000))
+    
+def get_url_path(file_path):
+    app_url = env("APP_URL")
+    return app_url + "/" + file_path
+	
+def get_rel_path(url):
+    parsed_url = urlparse(url)
+    return parsed_url.path

@@ -1,12 +1,12 @@
 from tinytag import TinyTag
 from pyaudioreader.audiofile import AudioFile
+from app.utils.helpers import get_url_path
 from app.config.uploads import (STORAGE_DIR, SONG_FILE_DIR)
 from app.services import FileUploadService
 from app.models import Song
 
 
 class SongFileService(FileUploadService):
-
 
 	def upload(self, uploaded_file, upload_dir=SONG_FILE_DIR):
 		file_path = super().upload(uploaded_file, upload_dir)
@@ -15,7 +15,7 @@ class SongFileService(FileUploadService):
 
 	def store(self, song: Song, song_file):
 		filetag = TinyTag.get(STORAGE_DIR + song_file)
-		file_url = self.get_url_path(song_file)
+		file_url = get_url_path(song_file)
 		song.file = file_url
 		song.size = filetag.filesize
 		song.duration = filetag.duration
