@@ -15,7 +15,8 @@ class SongFileService(FileUploadService):
 
 	def store(self, song: Song, song_file):
 		filetag = TinyTag.get(STORAGE_DIR + song_file)
-		song.file = song_file
+		file_url = self.get_url_path(song_file)
+		song.file = file_url
 		song.size = filetag.filesize
 		song.duration = filetag.duration
 		song.bitrate = filetag.bitrate
