@@ -13,10 +13,11 @@ ENV TZ=UTC
 
 # install system dependencies	
 RUN apt-get update && apt-get install -y gcc\
-	postgresql portaudio19-dev python3-pyaudio ffmpeg
+	portaudio19-dev python3-pyaudio ffmpeg librtlsdr-dev
 
 # install dependencies
 RUN pip install --upgrade pip
+RUN pip install gunicorn
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 

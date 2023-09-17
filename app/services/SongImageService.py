@@ -9,16 +9,14 @@ class SongImageService(FileUploadService):
 
 	def store(self, song: Song | Model, image_path):
 		cover_image = self.upload(image_path, SONG_IMAGE_DIR)
-		image_url = get_url_path(cover_image)
-		song.cover_image = image_url
+		song.cover_image = cover_image
 		song.save()
 		return song
 
 	def update(self, song: Song | Model, image_path):
 		new_image = self.upload(image_path, SONG_IMAGE_DIR)
-		old_image = get_rel_path(song.cover_image)
-		image_url = get_url_path(new_image)
-		song.cover_image = image_url
+		old_image = song.cover_image
+		song.cover_image = new_image
 		song.save()
 		self.delete(old_image)
 		return song

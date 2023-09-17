@@ -68,7 +68,7 @@ class SongsController(Controller):
     def destroy(self, id, response: Response):
         song = self.song_repository.get_by_id(id)
         old_file = song.file
-        old_image = song.image
+        old_image = song.cover_image
         song.delete()
         self.file_service.delete(old_file)
         self.image_service.delete(old_image)
