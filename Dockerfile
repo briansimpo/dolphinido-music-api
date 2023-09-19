@@ -1,10 +1,8 @@
 # pull official base image
 FROM python:3.10.12-slim
 
+# set working directory
 WORKDIR /var/www/html
-
-# create the app user
-RUN groupadd dolphinido && useradd -g dolphinido dolphinido
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -15,17 +13,18 @@ ENV TZ=UTC
 RUN apt-get update && apt-get install -y gcc\
 	portaudio19-dev python3-pyaudio ffmpeg librtlsdr-dev
 
-# install dependencies
-RUN pip install --upgrade pip
+# install application dependencies
 COPY ./requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --upgrade pip && \
+	pip install -r requirements.txt
 
-# copy project
+# copy project to docker image
 COPY . .
 COPY ./docker-start.sh /usr/local/bin/docker-start
 
-RUN chown -R dolphinido:dolphinido /var/www/html \ 
-	&& chmod u+x /usr/local/bin/docker-start
+# set file permissions
+RUN chmod -R 755 /var/www/html/storage && \
+	chmod +x /usr/local/bin/docker-start
 
-# run start.sh
+# run docker-start.sh
 ENTRYPOINT ["/usr/local/bin/docker-start"]
