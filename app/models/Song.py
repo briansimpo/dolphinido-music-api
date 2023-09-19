@@ -1,5 +1,3 @@
-import datetime
-
 from masoniteorm.models import Model
 from masoniteorm.scopes import UUIDPrimaryKeyMixin
 from masoniteorm.relationships import belongs_to
@@ -9,7 +7,7 @@ from app.builders import HasBuilder, SongBuilder
 class Song(Model, UUIDPrimaryKeyMixin, HasBuilder):
 
     __fillable__ = [
-        'id',  'title', 'file', 'hash', 'size', 'bitrate', 'duration', 'is_free', 'is_published', 
+        'id',  'title', 'filepath', 'filehash', 'filesize', 'bitrate', 'duration', 'is_free', 'is_published', 
         'release_date', 'cover_image', 'lyrics', 'artist_id', 'genre_id', 'album_id'
     ]
 
@@ -43,8 +41,5 @@ class Song(Model, UUIDPrimaryKeyMixin, HasBuilder):
     def genre(self):
         from app.models.Genre import Genre
         return Genre
-    
-    def __str__(self) -> str:
-        return self.title
     
    

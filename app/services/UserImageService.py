@@ -8,13 +8,13 @@ from app.models import User
 class UserImageService(FileUploadService):
 
 	def store(self, user: User | Model, image_path):
-		image = self.upload(image_path, USER_IMAGE_DIR)
+		image = self.upload(USER_IMAGE_DIR, image_path)
 		user.image = image
 		user.save()
 		return user
 
 	def update(self, user: User | Model, image_path):
-		new_image = self.upload(image_path, USER_IMAGE_DIR)
+		new_image = self.upload(USER_IMAGE_DIR, image_path)
 		old_image = user.image
 		user.image = new_image
 		user.save()
