@@ -1,5 +1,3 @@
-import datetime
-
 from masoniteorm.models import Model
 from masoniteorm.scopes import UUIDPrimaryKeyMixin
 from masoniteorm.relationships import belongs_to
@@ -43,8 +41,5 @@ class Song(Model, UUIDPrimaryKeyMixin, HasBuilder):
     def genre(self):
         from app.models.Genre import Genre
         return Genre
-    
-    def __str__(self) -> str:
-        return self.title
     
    

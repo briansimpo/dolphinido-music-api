@@ -4,7 +4,7 @@ from masonite.response import Response
 from masonite.queues import Queue
 
 from app.models import Song
-from app.jobs import Fingerprint
+from app.jobs.GenerateFingerprint import GenerateFingerprint
 from app.repositories import SongRepository
 from app.services import SongFileService, SongImageService
 
@@ -32,7 +32,7 @@ class SongsController(Controller):
 
         file_path = self.file_service.upload_file(uploaded_file)
         file_hash = self.file_service.get_file_hash(file_path)
-        audio = self.song_repository.get_by_hash(file_hash)
+        audio = self.song_repository.get_by_filehash(file_hash)
 
         if audio:
             self.file_service.delete(file_path)
@@ -51,7 +51,8 @@ class SongsController(Controller):
         self.file_service.store(song, file_path)
         self.image_service.store(song, uploaded_image)
 
-        queue.push(Fingerprint(song.id))
+        fingerprint_job = GenerateFingerprint(song)
+        queue.push(fingerprint_job)
 
         return response.json(song.serialize(), 201)
 
