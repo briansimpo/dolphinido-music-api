@@ -30,23 +30,25 @@ class SongsController(Controller):
         uploaded_file = request.input("song_file")
         uploaded_image = request.input("cover_image")
 
-        song_file, song_hash = self.file_service.upload(uploaded_file)
-        audio = self.song_repository.get_by_hash(song_hash)
+        file_path = self.file_service.upload_file(uploaded_file)
+        file_hash = self.file_service.get_file_hash(file_path)
+        audio = self.song_repository.get_by_hash(file_hash)
 
         if audio:
-            self.file_service.delete(song_file)
+            self.file_service.delete(file_path)
             return response.json({"message": "song already exists"}, 302)
 
         song = Song.create({
-            "artist_id": user.id,
-            "hash": song_hash,
             "title": request.input("title"),
             "release_date": request.input("release_date"),
             "album_id": request.input("album") or None,
-            "genre_id": request.input("genre")        
+            "genre_id": request.input("genre"),
+            "filepath": file_path,
+            "filehash": file_hash,
+            "artist_id": user.id        
         })
 
-        self.file_service.store(song, song_file)
+        self.file_service.store(song, file_path)
         self.image_service.store(song, uploaded_image)
 
         queue.push(Fingerprint(song.id))

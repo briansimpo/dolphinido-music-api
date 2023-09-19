@@ -11,9 +11,9 @@ class CreateSongsTable(Migration):
         with self.schema.create("songs") as table:
             table.uuid('id').primary()
             table.string('title')
-            table.string('hash').unique().nullable()
-            table.string('file').nullable()
-            table.integer('size').nullable()
+            table.string('filehash').unique().nullable()
+            table.string('filepath').nullable()
+            table.integer('filesize').nullable()
             table.integer('bitrate').nullable()
             table.integer('duration').nullable()
             table.boolean('is_free').default(True)

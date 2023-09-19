@@ -18,7 +18,7 @@ class Fingerprint(Queueable):
 
         audio_id = song.id
         file_path = song.file
-        audio_file = os.path.realpath(STORAGE_DIR + file_path)
+        audio_file = os.path.realpath(os.path.join(STORAGE_DIR, file_path))
         
         dolphinido.create_audio(audio_file, audio_id)
 
