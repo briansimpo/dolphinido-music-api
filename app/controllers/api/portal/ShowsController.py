@@ -14,9 +14,12 @@ class ShowsController(Controller):
         self.image_service = image_service
 
     def index(self, request: Request, response: Response):
-        user = request.user()
-        shows = self.show_repository.get_by_artist(user.id)
-        return response.json(shows.serialize())
+        try:    
+            user = request.user()
+            shows = self.show_repository.get_by_artist(user.id)
+            return response.json(shows.serialize())
+        except:
+            pass
 
     def show(self, id, response: Response):
         show = self.show_repository.get_by_id(id)
