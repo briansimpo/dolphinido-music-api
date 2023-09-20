@@ -18,7 +18,7 @@ class CreateShowsTable(Migration):
             table.string('contact_email').nullable()
             table.string('contact_number').nullable()
             table.date('event_date')
-            table.time('event_time')
+            table.string('event_time')
             table.integer('ticket_price').nullable()
             table.boolean('is_free').default(True)
             table.boolean('is_public').default(True)
