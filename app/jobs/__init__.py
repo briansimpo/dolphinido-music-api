@@ -1,0 +1,2 @@
+from .CreateAudioFingerprint import CreateAudioFingerprint
+from .DeleteAudioFingerprint import DeleteAudioFingerprint
