@@ -8,7 +8,7 @@ class Show(Model, UUIDPrimaryKeyMixin, HasBuilder):
     __fillable__ = ['id', 'title', 'venue', 'description', 'country', 'city', 'contact_email', 'contact_number', 'ticket_price',
                     'event_date', 'event_time', 'is_free', 'is_public', 'is_published', 'cover_image', 'artist_id']
 
-    __dates__ = ["event_date"]
+    __dates__ = ["event_date", "event_time"]
 
     def publish(self):
         self.__setattr__('is_published', True)
