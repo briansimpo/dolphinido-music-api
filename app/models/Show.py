@@ -8,6 +8,8 @@ class Show(Model, UUIDPrimaryKeyMixin, HasBuilder):
     __fillable__ = ['id', 'title', 'venue', 'description', 'country', 'city', 'contact_email', 'contact_number', 'ticket_price',
                     'event_date', 'event_time', 'is_free', 'is_public', 'is_published', 'cover_image', 'artist_id']
 
+    __dates__ = ["event_date"]
+
     def publish(self):
         self.__setattr__('is_published', True)
         return self.save()
@@ -36,6 +38,3 @@ class Show(Model, UUIDPrimaryKeyMixin, HasBuilder):
     def performers(self):
         from app.models.Artist import Artist
         return Artist
-
-    def __str__(self) -> str:
-        return self.title
