@@ -20,7 +20,7 @@ class CreateShowsTable(Migration):
             table.date('event_date')
             table.string('event_time')
             table.integer('ticket_price').nullable()
-            table.integer('available_seats').nullable()
+            table.integer('seats').nullable()
             table.boolean('is_free').default(True)
             table.boolean('is_public').default(True)
             table.boolean('is_published').default(False)
