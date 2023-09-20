@@ -4,8 +4,8 @@ from masonite.response import Response
 from masonite.queues import Queue
 
 from app.models import Song
-from app.jobs.GenerateFingerprint import GenerateFingerprint
 from app.repositories import SongRepository
+from app.jobs import CreateAudioFingerprint, DeleteAudioFingerprint
 from app.services import SongFileService, SongImageService
 
 
@@ -51,8 +51,8 @@ class SongsController(Controller):
         self.file_service.store(song, file_path)
         self.image_service.store(song, uploaded_image)
 
-        fingerprint_job = GenerateFingerprint(song)
-        queue.push(fingerprint_job)
+        create_fingerprint = CreateAudioFingerprint(song)
+        queue.push(create_fingerprint)
 
         return response.json(song.serialize(), 201)
 
@@ -68,13 +68,18 @@ class SongsController(Controller):
         })
         return response.json(song.serialize())
 
-    def destroy(self, id, response: Response):
+    def destroy(self, id, response: Response, queue: Queue):
         song = self.song_repository.get_by_id(id)
-        old_file = song.file
+        old_file = song.filepath
         old_image = song.cover_image
         song.delete()
+
         self.file_service.delete(old_file)
         self.image_service.delete(old_image)
+
+        delete_fingerprint = DeleteAudioFingerprint(song)
+        queue.push(delete_fingerprint)
+
         return response.json(payload={"message": "song deleted"}, status=204)
 
     def publish(self, id, response: Response):
