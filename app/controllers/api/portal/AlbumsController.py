@@ -15,12 +15,9 @@ class AlbumsController(Controller):
         self.song_repository = song_repository
 
     def index(self, request: Request, response: Response):
-        try:    
-            user = request.user()
-            albums = self.album_repository.get_by_artist(user.id)
-            return response.json(albums.serialize())
-        except:
-            pass
+        user = request.user()
+        albums = self.album_repository.get_by_artist(user.id)
+        return response.json(albums.serialize())
 
     def show(self, id, response: Response):
         album = self.album_repository.get_by_id(id)
