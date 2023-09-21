@@ -54,7 +54,7 @@ class SongRepository(Repository, WorkFilterMixin):
 
     def get_unknown_album(self, limit: int = 20):
         return self.query().with_meta()\
-            .where_null("songs.album_id")\
+            .where("songs.album_id", None)\
             .paginate(limit)
 
     def get_unknown_album_by_artist(self, artist_id):
