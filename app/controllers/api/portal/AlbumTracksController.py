@@ -16,11 +16,13 @@ class AlbumTracksController(Controller):
         return response.json(song.serialize())
 
     def store(self, request: Request, response: Response):
-        album_id = request.input("album_id")
-        song_id = request.input("song_id")
-        song = self.song_repository.get_by_id(song_id)
-        song.album_id = album_id
-        song.save()
-        return response.json(song.serialize())
+        album_id = request.input("album")
+        song_id_list = request.input("songs")
+
+        for song_id in song_id_list:
+            song = self.song_repository.get_by_id(song_id)
+            song.album_id = album_id
+            song.save()
+        return response.json({"data": song_id_list})
 
 
