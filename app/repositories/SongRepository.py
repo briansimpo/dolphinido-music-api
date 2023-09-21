@@ -46,7 +46,7 @@ class SongRepository(Repository, WorkFilterMixin):
             .paginate(limit)
 
     def get_by_playlist(self, playlist_id):
-        return self.query()\
+        return self.query().wher\
             .left_join("playlist_songs", "songs.id", "=", "playlist_songs.song_id")\
             .left_join("playlists", "playlists.id", "=", "playlist_songs.playlist_id")\
             .where("playlists.id", playlist_id)\
@@ -54,7 +54,7 @@ class SongRepository(Repository, WorkFilterMixin):
 
     def get_unknown_album(self, limit: int = 20):
         return self.query().with_meta()\
-            .where("songs.album_id", None)\
+            .where_null("songs.album_id")\
             .paginate(limit)
 
     def get_unknown_album_by_artist(self, artist_id):
