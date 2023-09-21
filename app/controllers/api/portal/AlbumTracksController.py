@@ -19,10 +19,17 @@ class AlbumTracksController(Controller):
         album_id = request.input("album")
         song_id_list = request.input("songs")
 
+        if type(song_id_list) is not list:
+            song_id_list = [song_id_list]
+        
         for song_id in song_id_list:
-            song = self.song_repository.get_by_id(song_id)
-            song.album_id = album_id
-            song.save()
+            self.assign(album_id, song_id)
         return response.json({"data": song_id_list})
+
+    def assign(self, album_id, song_id):
+        song = self.song_repository.get_by_id(song_id)
+        song.album_id = album_id
+        song.save()
+    
 
 
