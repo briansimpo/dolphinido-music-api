@@ -3,13 +3,14 @@ from masonite.request import Request
 from masonite.response import Response
 from masonite.queues import Queue
 
+from app.controllers.PaginatorMixin import PaginatorMixin
 from app.models import Song
 from app.repositories import SongRepository
 from app.jobs import CreateAudioFingerprint, DeleteAudioFingerprint
 from app.services import SongFileService, SongImageService
 
 
-class SongsController(Controller):
+class SongsController(Controller, PaginatorMixin):
 
     def __init__(self, song_repository: SongRepository, file_service: SongFileService, image_service: SongImageService):
         self.song_repository = song_repository
@@ -18,7 +19,8 @@ class SongsController(Controller):
 
     def index(self, request: Request, response: Response):
         user = request.user()
-        songs = self.song_repository.get_by_artist(user.id)
+        per_page, page = self.paginator(request)
+        songs = self.song_repository.get_by_artist(user.id, per_page, page)
         return response.json(songs.serialize())
 
     def show(self, id, response: Response):

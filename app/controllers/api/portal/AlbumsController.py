@@ -2,12 +2,13 @@ from masonite.controllers import Controller
 from masonite.request import Request
 from masonite.response import Response
 
+from app.controllers.PaginatorMixin import PaginatorMixin
 from app.models import Album
 from app.repositories import AlbumRepository, SongRepository
 from app.services import AlbumImageService
 
 
-class AlbumsController(Controller):
+class AlbumsController(Controller, PaginatorMixin):
 
     def __init__(self, album_repository: AlbumRepository, image_service: AlbumImageService, song_repository: SongRepository):
         self.album_repository = album_repository
@@ -16,7 +17,8 @@ class AlbumsController(Controller):
 
     def index(self, request: Request, response: Response):
         user = request.user()
-        albums = self.album_repository.get_by_artist(user.id)
+        per_page, page = self.paginator(request)
+        albums = self.album_repository.get_by_artist(user.id, per_page, page)
         return response.json(albums.serialize())
 
     def show(self, id, response: Response):

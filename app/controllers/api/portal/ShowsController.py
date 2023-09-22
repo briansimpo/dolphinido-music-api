@@ -2,12 +2,13 @@ from masonite.controllers import Controller
 from masonite.request import Request
 from masonite.response import Response
 
+from app.controllers.PaginatorMixin import PaginatorMixin
 from app.models import Show
 from app.repositories import ShowRepository
 from app.services import ShowImageService
 
 
-class ShowsController(Controller):
+class ShowsController(Controller, PaginatorMixin):
 
     def __init__(self, show_repository: ShowRepository, image_service: ShowImageService):
         self.show_repository = show_repository
@@ -15,7 +16,8 @@ class ShowsController(Controller):
 
     def index(self, request: Request, response: Response):
         user = request.user()
-        shows = self.show_repository.get_by_artist(user.id)
+        per_page, page = self.paginator(request)
+        shows = self.show_repository.get_by_artist(user.id, per_page, page)
         return response.json(shows.serialize())
 
     def show(self, id, response: Response):

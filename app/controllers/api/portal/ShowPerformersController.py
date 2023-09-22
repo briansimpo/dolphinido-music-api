@@ -12,7 +12,6 @@ class ShowPerformersController(Controller):
         performer.delete()
         return response.json(payload={"message": "performer deleted"}, status=204)
 
-
     def store(self, request: Request, response: Response):
         show_id = request.input("show_id")
         artist_id = request.input("artist_id")

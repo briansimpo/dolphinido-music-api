@@ -4,10 +4,10 @@ from .WorkFilterMixin import WorkFilterMixin
 
 class ShowRepository(Repository, WorkFilterMixin):
 
-    def get_by_artist(self, artist_id, limit: int = 20):
+    def get_by_artist(self, artist_id, per_page=20, page=1):
         return self.query().with_meta()\
             .where("artist_id", artist_id)\
-            .paginate(limit)
+            .paginate(per_page, page)
 
     def count_by_artist(self, artist_id):
         return self.query().where("artist_id", artist_id).count()
