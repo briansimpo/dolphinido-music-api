@@ -7,17 +7,9 @@ from app.models import Song
 class SongImageService(FileUploadService):
 
 	def store(self, song: Song | Model, image_path):
-		cover_image = None
-		try:
-			if image_path is None:
-				cover_image = self.placeholder(SONG_IMAGE_DIR)	
-			else:
-				cover_image = self.upload(SONG_IMAGE_DIR, image_path)
-		except Exception:
-			pass
-		finally:
-			song.cover_image = cover_image
-			song.save()
+		cover_image = self.upload(SONG_IMAGE_DIR, image_path)
+		song.cover_image = cover_image
+		song.save()
 		return song
 
 	def update(self, song: Song | Model, image_path):
@@ -27,6 +19,13 @@ class SongImageService(FileUploadService):
 		song.save()
 		self.delete(old_image)
 		return song
+
+	def default(self, song: Song):
+		cover_image = self.placeholder(SONG_IMAGE_DIR)
+		song.cover_image = cover_image
+		song.save()
+		return song
+
 
 		
 
