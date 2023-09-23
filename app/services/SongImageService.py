@@ -6,14 +6,18 @@ from app.models import Song
 
 class SongImageService(FileUploadService):
 
-	def store(self, song: Song | Model, image_path=None):
+	def store(self, song: Song | Model, image_path):
 		cover_image = None
-		if image_path is None:
-			cover_image = self.placeholder(SONG_IMAGE_DIR)
-		else:
-			cover_image = self.upload(SONG_IMAGE_DIR, image_path)
-		song.cover_image = cover_image
-		song.save()
+		try:
+			if image_path:
+				cover_image = self.upload(SONG_IMAGE_DIR, image_path)
+			else:
+				cover_image = self.placeholder(SONG_IMAGE_DIR)
+		except Exception:
+			pass
+		finally:
+			song.cover_image = cover_image
+			song.save()
 		return song
 
 	def update(self, song: Song | Model, image_path):

@@ -29,7 +29,7 @@ class SongsController(Controller, PaginatorMixin):
     def store(self, request: Request, response: Response, queue: Queue):
         user = request.user()
         uploaded_file = request.input("song_file")
-        uploaded_image = request.input("cover_image") or None
+        uploaded_image = request.input("cover_image")
 
         file_path = self.file_service.upload_file(uploaded_file)
         file_hash = self.file_service.get_file_hash(file_path)
