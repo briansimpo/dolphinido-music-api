@@ -17,10 +17,13 @@ class SongsController(Controller, PaginatorMixin):
         self.image_service = image_service
 
     def index(self, request: Request, response: Response):
-        user = request.user()
-        per_page, page = self.paginator(request)
-        songs = self.song_repository.get_by_artist(user.id, per_page, page)
-        return response.json(songs.serialize())
+        try:
+            user = request.user()
+            per_page, page = self.paginator(request)
+            songs = self.song_repository.get_by_artist(user.id, per_page, page)
+            return response.json(songs.serialize())
+        except:
+            return response.json({})
 
     def show(self, id, response: Response):
         song = self.song_repository.get_by_id(id)
@@ -29,7 +32,6 @@ class SongsController(Controller, PaginatorMixin):
     def store(self, request: Request, response: Response, queue: Queue):
         user = request.user()
         uploaded_file = request.input("song_file")
-        uploaded_image = request.input("cover_image") or None
 
         file_path = self.file_service.upload_file(uploaded_file)
         file_hash = self.file_service.get_file_hash(file_path)
@@ -46,11 +48,11 @@ class SongsController(Controller, PaginatorMixin):
             "artist_id": user.id        
         })
 
+        self.image_service.default(song)
         self.file_service.store(song, file_path)
-        self.image_service.store(song, uploaded_image)
 
-        create_fingerprint = CreateAudioFingerprint(song)
-        queue.push(create_fingerprint)
+        # create_fingerprint = CreateAudioFingerprint(song)
+        # queue.push(create_fingerprint)
 
         return response.json(song.serialize(), 201)
 
@@ -75,8 +77,8 @@ class SongsController(Controller, PaginatorMixin):
         self.file_service.delete(old_file)
         self.image_service.delete(old_image)
 
-        delete_fingerprint = DeleteAudioFingerprint(song)
-        queue.push(delete_fingerprint)
+        # delete_fingerprint = DeleteAudioFingerprint(song)
+        # queue.push(delete_fingerprint)
 
         return response.json(payload={"message": "song deleted"}, status=204)
 
