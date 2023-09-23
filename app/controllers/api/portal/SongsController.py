@@ -51,8 +51,8 @@ class SongsController(Controller, PaginatorMixin):
         self.image_service.default(song)
         self.file_service.store(song, file_path)
 
-        # create_fingerprint = CreateAudioFingerprint(song)
-        # queue.push(create_fingerprint)
+        create_fingerprint = CreateAudioFingerprint(song)
+        queue.push(create_fingerprint)
 
         return response.json(song.serialize(), 201)
 
@@ -77,8 +77,8 @@ class SongsController(Controller, PaginatorMixin):
         self.file_service.delete(old_file)
         self.image_service.delete(old_image)
 
-        # delete_fingerprint = DeleteAudioFingerprint(song)
-        # queue.push(delete_fingerprint)
+        delete_fingerprint = DeleteAudioFingerprint(song)
+        queue.push(delete_fingerprint)
 
         return response.json(payload={"message": "song deleted"}, status=204)
 
