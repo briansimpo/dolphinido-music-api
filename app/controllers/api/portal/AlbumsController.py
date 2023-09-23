@@ -15,10 +15,13 @@ class AlbumsController(Controller, PaginatorMixin):
         self.song_repository = song_repository
 
     def index(self, request: Request, response: Response):
-        user = request.user()
-        per_page, page = self.paginator(request)
-        albums = self.album_repository.get_by_artist(user.id, per_page, page)
-        return response.json(albums.serialize())
+        try:
+            user = request.user()
+            per_page, page = self.paginator(request)
+            albums = self.album_repository.get_by_artist(user.id, per_page, page)
+            return response.json(albums.serialize())
+        except:
+            return response.json({})
 
     def show(self, id, response: Response):
         album = self.album_repository.get_by_id(id)
