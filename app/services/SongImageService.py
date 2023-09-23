@@ -9,10 +9,10 @@ class SongImageService(FileUploadService):
 	def store(self, song: Song | Model, image_path):
 		cover_image = None
 		try:
-			if image_path:
-				cover_image = self.upload(SONG_IMAGE_DIR, image_path)
+			if image_path is None:
+				cover_image = self.placeholder(SONG_IMAGE_DIR)	
 			else:
-				cover_image = self.placeholder(SONG_IMAGE_DIR)
+				cover_image = self.upload(SONG_IMAGE_DIR, image_path)
 		except Exception:
 			pass
 		finally:
