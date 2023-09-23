@@ -13,7 +13,7 @@ class CreateAlbumsTable(Migration):
             table.string('title')
             table.boolean('is_free').default(True)
             table.boolean('is_published').default(False)
-            table.year('release_year').nullable()
+            table.string('release_year',8).nullable()
             table.string('cover_image').nullable()
             table.uuid('artist_id')
             table.uuid('genre_id').nullable()

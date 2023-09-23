@@ -18,7 +18,7 @@ class CreateSongsTable(Migration):
             table.integer('duration').nullable()
             table.boolean('is_free').default(True)
             table.boolean('is_published').default(False)
-            table.year('release_year').nullable()
+            table.string('release_year', 8).nullable()
             table.string('cover_image').nullable()
             table.text('lyrics').nullable()
             table.uuid('artist_id')
