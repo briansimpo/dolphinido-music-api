@@ -31,10 +31,11 @@ class FileUploadService:
 			os.mkdir(resolve_dir)		
 		random_file = "{}{}".format(random_name, extension)
 		upload_file = os.path.join(destination_dir, random_file)
-		destination_file = self.resolve(upload_file)
+		copy_file = self.resolve(upload_file)
 		try:
-			path = shutil.copy(placeholder, destination_file)
-			return path
+			path = shutil.copy(placeholder, copy_file)
+			if os.path.exists(path):
+				return upload_file
 		except Exception as e:
 			print(e)
 	
