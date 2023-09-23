@@ -23,20 +23,26 @@ class FileUploadService:
 		return os.path.join(STORAGE_DIR, file_path)
 
 	def placeholder(self, destination_dir):
-		extension = ".png"
-		placeholder_file = self.__placeholder()
-
-		random_file = self.__random_name() + extension
+		placeholder = self.__placeholder()
+		extension = self.__extension(placeholder)
+		random_name = self.__random_name()
+		if not os.path.exists(destination_dir):
+			resolve_dir = self.resolve(destination_dir)
+			os.mkdir(resolve_dir)		
+		random_file = "{}{}".format(random_name, extension)
 		upload_file = os.path.join(destination_dir, random_file)
 		destination_file = self.resolve(upload_file)
 		try:
-			path = shutil.copy(placeholder_file, destination_file)
+			path = shutil.copy(placeholder, destination_file)
 			return path
 		except Exception as e:
 			print(e)
-
+	
 	def __placeholder(self):
 		return self.resolve(PLACEHOLDER)
 	
 	def __random_name(self):
 		return uuid.uuid4()
+
+	def __extension(self, file_path):
+		return os.path.splitext(os.path.basename(file_path))[0]
