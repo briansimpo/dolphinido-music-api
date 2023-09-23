@@ -8,10 +8,8 @@ class Song(Model, UUIDPrimaryKeyMixin, HasBuilder):
 
     __fillable__ = [
         'id',  'title', 'filepath', 'filehash', 'filesize', 'bitrate', 'duration', 'is_free', 'is_published', 
-        'release_date', 'cover_image', 'lyrics', 'artist_id', 'genre_id', 'album_id'
+        'release_year', 'cover_image', 'lyrics', 'artist_id', 'genre_id', 'album_id'
     ]
-
-    __dates__ = ["release_date"]
 
     # derived attributes from SongBuilder
     __casts__ = {"downloads": "decimal", "plays": "decimal"}

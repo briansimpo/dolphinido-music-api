@@ -30,7 +30,7 @@ class SongsController(Controller, PaginatorMixin):
     def store(self, request: Request, response: Response, queue: Queue):
         user = request.user()
         uploaded_file = request.input("song_file")
-        uploaded_image = request.input("cover_image")
+        uploaded_image = request.input("cover_image") or None
 
         file_path = self.file_service.upload_file(uploaded_file)
         file_hash = self.file_service.get_file_hash(file_path)
@@ -42,9 +42,6 @@ class SongsController(Controller, PaginatorMixin):
 
         song = Song.create({
             "title": request.input("title"),
-            "release_date": request.input("release_date"),
-            "album_id": request.input("album") or None,
-            "genre_id": request.input("genre"),
             "filepath": file_path,
             "filehash": file_hash,
             "artist_id": user.id        
@@ -64,7 +61,7 @@ class SongsController(Controller, PaginatorMixin):
 
         song.update({
             "title": request.input("title"),
-            "release_date": request.input("release_date"),
+            "release_year": request.input("release_year"),
             "album_id": request.input("album") or None,
             "genre_id": request.input("genre")
         })

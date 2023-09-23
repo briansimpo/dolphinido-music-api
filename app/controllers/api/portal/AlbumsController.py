@@ -35,7 +35,7 @@ class AlbumsController(Controller, PaginatorMixin):
         album = Album.create({
             "artist_id": user.id,
             "title": request.input("title"),
-            "release_date": request.input("release_date"),
+            "release_year": request.input("release_year"),
             "genre_id": request.input("genre"),
             "album_release_id": request.input("album_release"),
         })
@@ -48,7 +48,7 @@ class AlbumsController(Controller, PaginatorMixin):
         album = self.album_repository.get_by_id(id)
         album.update({
             "title": request.input("title"),
-            "release_date": request.input("release_date"),
+            "release_year": request.input("release_year"),
             "genre_id": request.input("genre"),
             "album_release_id": request.input("album_release"),
         })

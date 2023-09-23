@@ -15,3 +15,6 @@ ALBUM_IMAGE_DIR = "albums/images"
 SONG_IMAGE_DIR = "songs/images"
 SONG_FILE_DIR = "songs/files"
 SHOW_IMAGE_DIR = "shows/images"
+
+# Image placeholder
+PLACEHOLDER = "placeholder.png"

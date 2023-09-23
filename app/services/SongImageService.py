@@ -1,3 +1,5 @@
+import shutil
+import os
 from masoniteorm import Model
 from app.config.uploads import SONG_IMAGE_DIR
 from app.services import FileUploadService
@@ -6,8 +8,12 @@ from app.models import Song
 
 class SongImageService(FileUploadService):
 
-	def store(self, song: Song | Model, image_path):
-		cover_image = self.upload(SONG_IMAGE_DIR, image_path)
+	def store(self, song: Song | Model, image_path=None):
+		cover_image = None
+		if image_path is None:
+			cover_image = self.placeholder(SONG_IMAGE_DIR)
+		else:
+			cover_image = self.upload(SONG_IMAGE_DIR, image_path)
 		song.cover_image = cover_image
 		song.save()
 		return song
@@ -19,6 +25,8 @@ class SongImageService(FileUploadService):
 		song.save()
 		self.delete(old_image)
 		return song
+
+		
 
 
 

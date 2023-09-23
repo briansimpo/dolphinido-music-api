@@ -6,7 +6,6 @@ from app.models import Artist
 
 class ArtistImageService(FileUploadService):
 
-
 	def store(self, artist: Artist | Model, image_path):
 		image = self.upload(ARTIST_IMAGE_DIR, image_path)
 		artist.image = image
