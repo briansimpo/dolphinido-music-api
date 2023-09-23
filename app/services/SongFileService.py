@@ -24,21 +24,27 @@ class SongFileService(FileUploadService):
 		song.filesize = filetag.filesize
 		song.duration = filetag.duration
 		song.bitrate = filetag.bitrate
-		if filetag.genre:
+		
+		if filetag.genre is not None:
 			genre = self.get_genre(filetag.genre)
 			song.genre_id = genre.id
-		if filetag.year:
+		else:
+			genre = self.get_genre(Genre.UNKNOWN)
+			song.genre_id = genre.id
+
+		if filetag.year is not None:
 			song.release_year = filetag.year
 		song.save()
 		return song
 	
 	def get_genre(self, name):
 		try:
-			slug = slugify(name)
-			genre = Genre.first_or_create(
-				wheres={'slug': slug}, 
-				creates={'name': name, 'slug': slug}
-			)
+			slug = slugify(name, separator="_")
+
+			genre = Genre.where("slug", slug).first()
+
+			if genre is None:    
+				genre = Genre.create({'name': name, 'slug': slug})
 			return genre
 		except Exception as e:
 			print(e)

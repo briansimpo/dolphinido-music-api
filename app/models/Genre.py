@@ -4,6 +4,8 @@ from masoniteorm.relationships import has_many
 
 
 class Genre(Model, UUIDPrimaryKeyMixin):
+    UNKNOWN = "Unknown"
+
     __fillable__ = ['id', 'name', 'slug']
 
     @has_many('genre_id', 'id')

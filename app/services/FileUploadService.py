@@ -1,6 +1,7 @@
 import os
 import shutil
 import uuid
+import pathlib
 from masonite.filesystem import Storage
 from app.config.uploads import STORAGE_DISK, STORAGE_DIR, PLACEHOLDER
 
@@ -26,18 +27,22 @@ class FileUploadService:
 		placeholder = self.__placeholder()
 		extension = self.__extension(placeholder)
 		random_name = self.__random_name()
-		if not os.path.exists(destination_dir):
-			resolve_dir = self.resolve(destination_dir)
-			os.mkdir(resolve_dir)		
-		random_file = "{}{}".format(random_name, extension)
-		upload_file = os.path.join(destination_dir, random_file)
-		copy_file = self.resolve(upload_file)
+
 		try:
+			resolve_dir = self.resolve(destination_dir)
+			os.mkdir(resolve_dir)
+		except:
+			pass	
+
+		try:
+			random_file = "{}{}".format(random_name, extension)
+			upload_file = os.path.join(destination_dir, random_file)
+			copy_file = self.resolve(upload_file)
 			path = shutil.copy(placeholder, copy_file)
 			if os.path.exists(path):
 				return upload_file
-		except Exception as e:
-			print(e)
+		except:
+			pass
 	
 	def __placeholder(self):
 		return self.resolve(PLACEHOLDER)
@@ -46,4 +51,4 @@ class FileUploadService:
 		return uuid.uuid4()
 
 	def __extension(self, file_path):
-		return os.path.splitext(os.path.basename(file_path))[0]
+		return os.path.splitext(os.path.basename(file_path))[1]

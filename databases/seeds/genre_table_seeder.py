@@ -8,8 +8,8 @@ class GenreTableSeeder(Seeder):
     def run(self):
         """Run the database seeds."""
         Genre.create({
-            'name': 'Amapiano', 
-            'slug': 'amapiano'
+            'name': 'Afro', 
+            'slug': 'afro'
         })
 
         Genre.create({
@@ -20,6 +20,11 @@ class GenreTableSeeder(Seeder):
         Genre.create({
             'name': 'Afro beat', 
             'slug': 'afro_beat'
+        })
+
+        Genre.create({
+            'name': 'Amapiano', 
+            'slug': 'amapiano'
         })
 
         Genre.create({
@@ -93,6 +98,11 @@ class GenreTableSeeder(Seeder):
         })
 
         Genre.create({
+            'name': 'Lokolo', 
+            'slug': 'lokolo'
+        })
+
+        Genre.create({
             'name': 'Malimba', 
             'slug': 'malimba'
         })
@@ -145,6 +155,16 @@ class GenreTableSeeder(Seeder):
         Genre.create({
             'name': 'Soul', 
             'slug': 'soul'
+        })
+
+        Genre.create({
+            'name': 'Urban', 
+            'slug': 'urban'
+        })
+
+        Genre.create({
+            'name': 'Unknown', 
+            'slug': 'unknown'
         })
 
         Genre.create({
