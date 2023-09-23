@@ -3,10 +3,9 @@ from masonite.request import Request
 from masonite.response import Response
 
 from app.controllers.PaginatorMixin import PaginatorMixin
-from app.models import Show
 from app.repositories import ShowRepository
 from app.services import ShowImageService
-
+from app.models import Show
 
 class ShowsController(Controller, PaginatorMixin):
 

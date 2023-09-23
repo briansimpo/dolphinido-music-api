@@ -3,10 +3,9 @@ from masonite.request import Request
 from masonite.response import Response
 
 from app.controllers.PaginatorMixin import PaginatorMixin
-from app.models import Album
 from app.repositories import AlbumRepository, SongRepository
 from app.services import AlbumImageService
-
+from app.models import Album
 
 class AlbumsController(Controller, PaginatorMixin):
 

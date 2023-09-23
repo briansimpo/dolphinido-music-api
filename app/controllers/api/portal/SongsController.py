@@ -4,11 +4,10 @@ from masonite.response import Response
 from masonite.queues import Queue
 
 from app.controllers.PaginatorMixin import PaginatorMixin
-from app.models import Song
 from app.repositories import SongRepository
 from app.jobs import CreateAudioFingerprint, DeleteAudioFingerprint
 from app.services import SongFileService, SongImageService
-
+from app.models import Song
 
 class SongsController(Controller, PaginatorMixin):
 
