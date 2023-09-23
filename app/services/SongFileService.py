@@ -34,6 +34,8 @@ class SongFileService(FileUploadService):
 
 		if filetag.year is not None:
 			song.release_year = filetag.year
+		else:
+			song.release_year = None
 		song.save()
 		return song
 	
