@@ -13,12 +13,12 @@ class SongFileService(FileUploadService):
 		return file_path
 	
 	def get_file_hash(self, file_path):
-		resolved_path = self.fileresolver.resolve(file_path)
+		resolved_path = self.resolve(file_path)
 		file_hash = AudioFile.get_hash(resolved_path)
 		return file_hash	
 
 	def store(self, song: Song, file_path):
-		resolved_path = self.fileresolver.resolve(file_path)
+		resolved_path = self.resolve(file_path)
 		filetag = TinyTag.get(resolved_path)
 		genre = self.get_genre(filetag.genre)
 

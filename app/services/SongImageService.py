@@ -1,5 +1,3 @@
-import shutil
-import os
 from masoniteorm import Model
 from app.config.uploads import SONG_IMAGE_DIR
 from app.services import FileUploadService
