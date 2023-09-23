@@ -14,10 +14,13 @@ class ShowsController(Controller, PaginatorMixin):
         self.image_service = image_service
 
     def index(self, request: Request, response: Response):
-        user = request.user()
-        per_page, page = self.paginator(request)
-        shows = self.show_repository.get_by_artist(user.id, per_page, page)
-        return response.json(shows.serialize())
+        try:
+            user = request.user()
+            per_page, page = self.paginator(request)
+            shows = self.show_repository.get_by_artist(user.id, per_page, page)
+            return response.json(shows.serialize())
+        except:
+            return response.json({})
 
     def show(self, id, response: Response):
         show = self.show_repository.get_by_id(id)
