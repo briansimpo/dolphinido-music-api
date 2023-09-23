@@ -24,10 +24,11 @@ class SongFileService(FileUploadService):
 		song.filesize = filetag.filesize
 		song.duration = filetag.duration
 		song.bitrate = filetag.bitrate
-		song.release_year = filetag.year
 		if filetag.genre:
 			genre = self.get_genre(filetag.genre)
 			song.genre_id = genre.id
+		if filetag.year:
+			song.release_year = filetag.year
 		song.save()
 		return song
 	
