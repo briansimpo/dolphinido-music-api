@@ -20,13 +20,13 @@ class SongFileService(FileUploadService):
 	def store(self, song: Song, file_path):
 		resolved_path = self.resolve(file_path)
 		filetag = TinyTag.get(resolved_path)
-		genre = self.get_genre(filetag.genre)
 
 		song.filesize = filetag.filesize
 		song.duration = filetag.duration
 		song.bitrate = filetag.bitrate
 		song.release_year = filetag.year
-		if genre:
+		if filetag.genre:
+			genre = self.get_genre(filetag.genre)
 			song.genre_id = genre.id
 		song.save()
 		return song
