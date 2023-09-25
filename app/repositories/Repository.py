@@ -1,7 +1,6 @@
 import importlib
 import re
 from abc import ABC
-from masoniteorm.models import Model
 from masoniteorm.query import QueryBuilder
 from masoniteorm.collection import Collection
 

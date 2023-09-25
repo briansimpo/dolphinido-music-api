@@ -2,7 +2,7 @@ from masonite.controllers import Controller
 from masonite.request import Request
 from masonite.response import Response
 
-from app.controllers.PaginatorMixin import PaginatorMixin
+from app.controllers.mixin.PaginatorMixin import PaginatorMixin
 from app.repositories import AlbumRepository, SongRepository
 from app.services import AlbumImageService
 from app.models import Album
@@ -17,7 +17,8 @@ class AlbumsController(Controller, PaginatorMixin):
     def index(self, request: Request, response: Response):
         try:
             user = request.user()
-            per_page, page = self.paginator(request)
+            per_page = self.get_per_page(request)
+            page = self.get_page(request)
             albums = self.album_repository.get_by_artist(user.id, per_page, page)
             return response.json(albums.serialize())
         except:

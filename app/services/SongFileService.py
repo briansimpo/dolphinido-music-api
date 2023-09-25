@@ -41,6 +41,7 @@ class SongFileService(FileUploadService):
 	
 	def get_genre(self, name):
 		try:
+			name = name or Genre.UNKNOWN
 			slug = slugify(name, separator="_")
 
 			genre = Genre.where("slug", slug).first()

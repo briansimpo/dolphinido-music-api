@@ -40,9 +40,14 @@ class SongRepository(Repository, WorkFilterMixin):
             .where("songs.album_id", album_id)\
             .get()
 
-    def get_by_artist(self, artist_id, per_page=20, page=1):
+    def get_by_artist(self, artist_id):
         return self.query().with_meta()\
             .where("songs.artist_id", artist_id)\
+            .get()
+    
+    def get_by_genre(self, genre_id, per_page=20, page=1):
+        return self.query().with_meta()\
+            .where("songs.genre_id", genre_id)\
             .paginate(per_page, page)
 
     def get_by_playlist(self, playlist_id):
@@ -81,3 +86,15 @@ class SongRepository(Repository, WorkFilterMixin):
         return self.query() \
             .where("songs.artist_id", artist_id) \
             .count()
+    
+    def filter(self, filters: dict, sort_by: str, per_page=20, page=1):
+        if sort_by:
+            return self.query().with_meta() \
+                .where(filters) \
+                .order_by(sort_by) \
+                .paginate(per_page, page)
+        else:
+            return self.query().with_meta() \
+                .where(filters) \
+                .paginate(per_page, page)
+    

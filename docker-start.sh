@@ -5,6 +5,7 @@ set -e
 role=${CONTAINER_ROLE:-app}
 
 if [ "$role" == "app" ]; then
+    python craft migrate 
     gunicorn wsgi:application --bind 0.0.0.0:8000 
 	   
 elif [ "$role" == "queue" ]; then
