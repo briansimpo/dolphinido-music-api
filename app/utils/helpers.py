@@ -35,9 +35,9 @@ def format_filesize(size_bytes):
 
 def format_bitrate(bitrate):
     if bitrate < 512:
-        return int(round(bitrate))
+        return int(round(bitrate)) + "Bps"
     else:
-        return int(round(bitrate / 1000))
+        return int(round(bitrate / 1000)) + "Bps"
     
 def get_file_url(file_path):
     app_url = env("APP_URL")
