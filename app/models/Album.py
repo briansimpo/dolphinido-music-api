@@ -7,7 +7,7 @@ from app.builders import HasBuilder, AlbumBuilder
 
 class Album(Model, UUIDPrimaryKeyMixin, HasBuilder):
     __fillable__ = [
-        'id',  'title', 'year', 'is_free', 'is_published',  
+        'id',  'title', 'year', 'price', 'is_free', 'is_published',  
         'image_path', 'image_url', 'artist_id', 'genre_id', 'album_release_id'
     ]
 

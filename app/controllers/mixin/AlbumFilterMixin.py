@@ -1,8 +1,8 @@
 from masonite.request import Request
 from app.controllers.mixin import PaginatorMixin
-from app.filters import SongFilter
+from app.filters import AlbumFilter
 
-class SongFilterMixin(PaginatorMixin):
+class AlbumFilterMixin(PaginatorMixin):
     
     def is_filterable(self, request: Request) -> bool:
         if request.input('genre') \
@@ -37,15 +37,15 @@ class SongFilterMixin(PaginatorMixin):
         per_page = self.get_per_page(request)
         page = self.get_page(request)
 
-        filter = SongFilter()
+        filter = AlbumFilter()
         filter.set_filters(filters)
         filter.set_sort(sort_by)
         filter.set_page(page)
         filter.set_per_page(per_page)
 
-        songs = filter.process()
+        albums = filter.process()
 
-        return songs
+        return albums
     
     def filter_by_owner(self, request: Request):
         user = request.user()
@@ -57,13 +57,13 @@ class SongFilterMixin(PaginatorMixin):
 
         filters["artist_id"]=user.id
 
-        filter = SongFilter()
+        filter = AlbumFilter()
         filter.set_filters(filters)
         filter.set_sort(sort_by)
         filter.set_page(page)
         filter.set_per_page(per_page)
 
-        songs = filter.process()
+        albums = filter.process()
 
-        return songs
+        return albums
     
