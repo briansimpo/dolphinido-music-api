@@ -7,9 +7,11 @@ from app.builders import HasBuilder, AlbumBuilder
 
 class Album(Model, UUIDPrimaryKeyMixin, HasBuilder):
     __fillable__ = [
-        'id',  'title', 'is_free', 'is_published', 'release_year', 'cover_image',
-        'artist_id', 'genre_id', 'album_release_id'
+        'id',  'title', 'year', 'is_free', 'is_published',  
+        'image_path', 'image_url', 'artist_id', 'genre_id', 'album_release_id'
     ]
+
+    __hidden__ = ["image_path"]
 
     # derived attributes from AlbumBuilder
     __casts__ = {"downloads": "decimal"}

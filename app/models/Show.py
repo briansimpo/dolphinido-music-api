@@ -5,8 +5,13 @@ from app.builders import HasBuilder, ShowBuilder
 
 
 class Show(Model, UUIDPrimaryKeyMixin, HasBuilder):
-    __fillable__ = ['id', 'title', 'venue', 'description', 'country', 'city', 'contact_email', 'contact_number', 'ticket_price',
-                   'seats', 'event_date', 'event_time', 'is_free', 'is_public', 'is_published', 'cover_image', 'artist_id']
+    __fillable__ = [
+        'id', 'title', 'venue', 'description', 'country', 'city', 
+        'contact_email', 'contact_number', 'ticket_price', 'seats', 'event_date', 'event_time', 
+        'is_free', 'is_public', 'is_published', 'image_path', 'image_url', 'artist_id'
+    ]
+    
+    __hidden__ = ["image_path"]
 
     __dates__ = ["event_date"]
 

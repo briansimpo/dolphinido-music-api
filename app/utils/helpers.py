@@ -39,7 +39,7 @@ def format_bitrate(bitrate):
     else:
         return int(round(bitrate / 1000))
     
-def get_url_path(file_path):
+def get_file_url(file_path):
     app_url = env("APP_URL")
     return app_url + "/" + file_path
 	

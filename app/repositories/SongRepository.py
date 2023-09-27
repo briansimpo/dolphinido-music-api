@@ -4,14 +4,14 @@ from .WorkFilterMixin import WorkFilterMixin
 
 class SongRepository(Repository, WorkFilterMixin):
 
-    def get_by_filehash(self, hash: str):
+    def get_by_hash(self, hash: str):
         return self.query().with_meta()\
-            .where("songs.filehash", hash)\
+            .where("songs.hash", hash)\
             .first()
     
-    def get_by_filepath(self, file_path: str):
+    def get_by_file_path(self, file_path: str):
         return self.query().with_meta()\
-            .where("songs.filepath", file_path)\
+            .where("songs.file_path", file_path)\
             .first()
 
     def get_played_by_user_recently(self, user_id, per_page=20, page=1):

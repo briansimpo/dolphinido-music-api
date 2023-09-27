@@ -15,7 +15,8 @@ class CreateArtistsTable(Migration):
             table.string('country').nullable()
             table.string('city').nullable()
             table.text('bio').nullable()
-            table.string('image').nullable()
+            table.string('image_path').nullable()
+            table.string('image_url').nullable()
             table.uuid('artist_type_id')
             table.timestamps()
 

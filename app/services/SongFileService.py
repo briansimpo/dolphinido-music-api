@@ -21,7 +21,7 @@ class SongFileService(FileUploadService):
 		resolved_path = self.resolve(file_path)
 		filetag = TinyTag.get(resolved_path)
 
-		song.filesize = filetag.filesize
+		song.size = filetag.filesize
 		song.duration = filetag.duration
 		song.bitrate = filetag.bitrate
 		
@@ -33,9 +33,9 @@ class SongFileService(FileUploadService):
 			song.genre_id = genre.id
 
 		if filetag.year is not None:
-			song.release_year = filetag.year
+			song.year = filetag.year
 		else:
-			song.release_year = None
+			song.year = None
 		song.save()
 		return song
 	

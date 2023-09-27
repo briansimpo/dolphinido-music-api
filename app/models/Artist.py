@@ -6,8 +6,10 @@ from app.builders import HasBuilder, ArtistBuilder
 
 class Artist(Model, UUIDPrimaryKeyMixin, HasBuilder):
     __fillable__ = [
-        'id', 'name', 'birthday', 'country', 'city', 'bio', 'image', 'artist_type_id'
+        'id', 'name', 'birthday', 'country', 'city', 'bio', 'image_path', 'image_url', 'artist_type_id'
     ]
+
+    __hidden__ = ["image_path"]
 
     @belongs_to('id', 'id')
     def user(self):

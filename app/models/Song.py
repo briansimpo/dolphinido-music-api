@@ -7,9 +7,11 @@ from app.builders import HasBuilder, SongBuilder
 class Song(Model, UUIDPrimaryKeyMixin, HasBuilder):
 
     __fillable__ = [
-        'id',  'title', 'filepath', 'filehash', 'filesize', 'bitrate', 'duration', 'is_free', 'is_published', 
-        'release_year', 'cover_image', 'lyrics', 'artist_id', 'genre_id', 'album_id'
+        'id',  'title', 'hash', 'size', 'bitrate', 'duration', 'is_free', 'is_published', 
+        'year', 'file_path', 'image_path', 'file_url', 'image_url', 'lyrics', 'artist_id', 'genre_id', 'album_id'
     ]
+
+    __hidden__ = ["file_path", "image_path"]
 
     # derived attributes from SongBuilder
     __casts__ = {"downloads": "decimal", "plays": "decimal"}

@@ -13,7 +13,7 @@ class CreateAudioFingerprint(Queueable):
     def handle(self):
         dolphinido = Dolphinido()
         audio_id = self.song.id
-        file_path = self.song.filepath
+        file_path = self.song.file_path
         audio_file = os.path.realpath(os.path.join(STORAGE_DIR, file_path))
         dolphinido.create_audio(audio_file, audio_id)
 

@@ -8,8 +8,14 @@ from masoniteorm.relationships import has_one, has_many
 
 class User(Model, UUIDPrimaryKeyMixin, SoftDeletesMixin, Authenticates, AuthenticatesTokens):
     __TOKEN_COLUMN__ = "api_token"
-    __fillable__ = ["id", "name", "email", "password", "is_artist", "is_fan", "is_admin", "image"]
-    __hidden__ = ["password"]
+
+    __fillable__ = [
+        "id", "name", "email", "password", "is_artist", "is_fan", "is_admin", 
+        "profile_image", "profile_image_url"
+    ]
+    
+    __hidden__ = ["password", "profile_image"]
+    
     __auth__ = "email"
 
     def become_artist(self):

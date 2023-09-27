@@ -3,13 +3,14 @@ from masonite.request import Request
 from masonite.response import Response
 from masonite.queues import Queue
 
-from app.controllers.mixin import SongFilterMixin
+from app.controllers.mixin import SongFilterMixin, EmptyMixin
 from app.repositories import SongRepository
 from app.jobs import CreateAudioFingerprint, DeleteAudioFingerprint
 from app.services import SongFileService, SongImageService
 from app.models import Song
+from app.utils.helpers import get_file_url
 
-class SongsController(Controller, SongFilterMixin):
+class SongsController(Controller, SongFilterMixin, EmptyMixin):
 
     def __init__(self, song_repository: SongRepository, file_service: SongFileService, image_service: SongImageService):
         self.song_repository = song_repository
@@ -24,13 +25,13 @@ class SongsController(Controller, SongFilterMixin):
     def index(self, request: Request, response: Response):
         try:
             if self.is_filterable(request) \
-            and self.is_pageable(request):
+            or self.is_pageable(request):
                 songs = self.filter_by_owner(request)
             else:
                 songs = self.getall(request)
             return response.json(songs.serialize())
         except:
-            return response.json({})
+            return response.json(self.empty())
 
     def show(self, id, response: Response):
         song = self.song_repository.get_by_id(id)
@@ -42,7 +43,8 @@ class SongsController(Controller, SongFilterMixin):
 
         file_path = self.file_service.upload_file(uploaded_file)
         file_hash = self.file_service.get_file_hash(file_path)
-        audio = self.song_repository.get_by_filehash(file_hash)
+        file_url = get_file_url(file_path)
+        audio = self.song_repository.get_by_hash(file_hash)
 
         if audio:
             self.file_service.delete(file_path)
@@ -50,8 +52,9 @@ class SongsController(Controller, SongFilterMixin):
 
         song = Song.create({
             "title": request.input("title"),
-            "filepath": file_path,
-            "filehash": file_hash,
+            "hash": file_hash,
+            "file_path": file_path,
+            "file_url": file_url,
             "artist_id": user.id        
         })
 
@@ -69,7 +72,7 @@ class SongsController(Controller, SongFilterMixin):
 
         song.update({
             "title": request.input("title"),
-            "release_year": request.input("release_year"),
+            "year": request.input("year"),
             "album_id": request.input("album") or None,
             "genre_id": request.input("genre")
         })

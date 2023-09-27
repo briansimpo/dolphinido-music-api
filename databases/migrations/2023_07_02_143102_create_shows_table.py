@@ -24,7 +24,8 @@ class CreateShowsTable(Migration):
             table.boolean('is_free').default(True)
             table.boolean('is_public').default(True)
             table.boolean('is_published').default(False)
-            table.string('cover_image').nullable()
+            table.string('image_path').nullable()
+            table.string('image_url').nullable()
             table.uuid('artist_id')
             table.timestamps()
 
