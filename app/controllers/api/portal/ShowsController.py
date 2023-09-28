@@ -2,12 +2,12 @@ from masonite.controllers import Controller
 from masonite.request import Request
 from masonite.response import Response
 
-from app.controllers.mixin import ShowFilterMixin, EmptyMixin
+from app.controllers.mixin import ShowFilterMixin
 from app.repositories import ShowRepository
 from app.services import ShowImageService
 from app.models import Show
 
-class ShowsController(Controller, ShowFilterMixin, EmptyMixin):
+class ShowsController(Controller, ShowFilterMixin):
 
     def __init__(self, show_repository: ShowRepository, image_service: ShowImageService):
         self.show_repository = show_repository

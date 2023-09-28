@@ -1,7 +1,7 @@
 from masonite.request import Request
-from app.controllers.mixin import PaginatorMixin
+from app.controllers.mixin import AbstractFilterMixin
 
-class ShowFilterMixin(PaginatorMixin):
+class ShowFilterMixin(AbstractFilterMixin):
     
     def is_filterable(self, request: Request) -> bool:
         if request.input('country') \
@@ -32,7 +32,3 @@ class ShowFilterMixin(PaginatorMixin):
         if is_published is not None:
             filter["is_published"] = bool(is_published)
         return filter
-    
-    def get_sorter(self, request: Request) -> str:
-        sort_by = request.input("sort") or None
-        return sort_by

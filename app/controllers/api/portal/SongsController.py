@@ -3,14 +3,14 @@ from masonite.request import Request
 from masonite.response import Response
 from masonite.queues import Queue
 
-from app.controllers.mixin import SongFilterMixin, EmptyMixin
+from app.controllers.mixin import SongFilterMixin
 from app.repositories import SongRepository
 from app.jobs import CreateAudioFingerprint, DeleteAudioFingerprint
 from app.services import SongFileService, SongImageService
 from app.models import Song
 from app.utils.helpers import get_file_url
 
-class SongsController(Controller, SongFilterMixin, EmptyMixin):
+class SongsController(Controller, SongFilterMixin):
 
     def __init__(self, song_repository: SongRepository, file_service: SongFileService, image_service: SongImageService):
         self.song_repository = song_repository

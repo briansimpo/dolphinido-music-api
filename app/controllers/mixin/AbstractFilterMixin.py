@@ -1,6 +1,7 @@
+from abc import ABC, abstractmethod
 from masonite.request import Request
 
-class PaginatorMixin:
+class AbstractFilterMixin(ABC):
 	PER_PAGE = 100
 	CURRENT_PAGE = 1
 
@@ -18,3 +19,18 @@ class PaginatorMixin:
 		page = request.input('page') or self.CURRENT_PAGE
 		return int(page)
 	
+	def get_sorter(self, request: Request) -> str:
+		sort_by = request.input("sort") or None
+		return sort_by
+	
+	def empty(self):
+		data = {"data": [], "meta": {"last_page": 1 } }
+		return data
+	
+	@abstractmethod
+	def is_filterable(self, *kwargs) -> bool:
+		pass
+	
+	@abstractmethod
+	def get_filters(self, *kwargs) -> dict:
+		pass

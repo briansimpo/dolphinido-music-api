@@ -2,12 +2,12 @@ from masonite.controllers import Controller
 from masonite.request import Request
 from masonite.response import Response
 
-from app.controllers.mixin import AlbumFilterMixin, EmptyMixin
+from app.controllers.mixin import AlbumFilterMixin
 from app.repositories import AlbumRepository, SongRepository
 from app.services import AlbumImageService
 from app.models import Album
 
-class AlbumsController(Controller, AlbumFilterMixin, EmptyMixin):
+class AlbumsController(Controller, AlbumFilterMixin):
 
     def __init__(self, album_repository: AlbumRepository, image_service: AlbumImageService, song_repository: SongRepository):
         self.album_repository = album_repository
