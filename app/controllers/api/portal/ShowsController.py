@@ -2,26 +2,45 @@ from masonite.controllers import Controller
 from masonite.request import Request
 from masonite.response import Response
 
-from app.controllers.mixin.PaginatorMixin import PaginatorMixin
+from app.controllers.mixin import ShowFilterMixin, EmptyMixin
 from app.repositories import ShowRepository
 from app.services import ShowImageService
 from app.models import Show
 
-class ShowsController(Controller, PaginatorMixin):
+class ShowsController(Controller, ShowFilterMixin, EmptyMixin):
 
     def __init__(self, show_repository: ShowRepository, image_service: ShowImageService):
         self.show_repository = show_repository
         self.image_service = image_service
 
+    def getall(self, request: Request):
+        user = request.user()
+        shows = self.show_repository.get_by_artist(user.id)
+        return shows
+    
+    def filter(self, request: Request):
+        user = request.user()
+        filters = self.get_filters(request)
+        sort_by = self.get_sorter(request)
+        per_page = self.get_per_page(request)
+        page = self.get_page(request)
+    
+        filters["artist_id"]=user.id
+        
+        shows = self.show_repository.filter(filters, sort_by, per_page,page)
+        return shows
+    
     def index(self, request: Request, response: Response):
         try:
-            user = request.user()
-            per_page = self.get_per_page(request)
-            page = self.get_page(request)
-            shows = self.show_repository.get_by_artist(user.id, per_page, page)
+            if self.is_filterable(request) \
+            or self.is_pageable(request):
+                shows = self.filter(request)
+            else:
+                shows = self.getall(request)
             return response.json(shows.serialize())
         except:
-            return response.json({})
+            return response.json(self.empty())
+
 
     def show(self, id, response: Response):
         show = self.show_repository.get_by_id(id)

@@ -87,14 +87,3 @@ class SongRepository(Repository, WorkFilterMixin):
             .where("songs.artist_id", artist_id) \
             .count()
     
-    def filter(self, filters: dict, sort_by: str, per_page=20, page=1):
-        if sort_by:
-            return self.query().with_meta() \
-                .where(filters) \
-                .order_by(sort_by) \
-                .paginate(per_page, page)
-        else:
-            return self.query().with_meta() \
-                .where(filters) \
-                .paginate(per_page, page)
-    

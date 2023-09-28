@@ -2,27 +2,45 @@ from masonite.controllers import Controller
 from masonite.request import Request
 from masonite.response import Response
 
-from app.controllers.mixin.PaginatorMixin import PaginatorMixin
+from app.controllers.mixin import AlbumFilterMixin, EmptyMixin
 from app.repositories import AlbumRepository, SongRepository
 from app.services import AlbumImageService
 from app.models import Album
 
-class AlbumsController(Controller, PaginatorMixin):
+class AlbumsController(Controller, AlbumFilterMixin, EmptyMixin):
 
     def __init__(self, album_repository: AlbumRepository, image_service: AlbumImageService, song_repository: SongRepository):
         self.album_repository = album_repository
         self.image_service = image_service
         self.song_repository = song_repository
 
+    def getall(self, request: Request):
+        user = request.user()
+        albums = self.album_repository.get_by_artist(user.id)
+        return albums
+    
+    def filter(self, request: Request):
+        user = request.user()
+        filters = self.get_filters(request)
+        sort_by = self.get_sorter(request)
+        per_page = self.get_per_page(request)
+        page = self.get_page(request)
+    
+        filters["artist_id"]=user.id
+        
+        albums = self.album_repository.filter(filters, sort_by, per_page,page)
+        return albums
+    
     def index(self, request: Request, response: Response):
         try:
-            user = request.user()
-            per_page = self.get_per_page(request)
-            page = self.get_page(request)
-            albums = self.album_repository.get_by_artist(user.id, per_page, page)
+            if self.is_filterable(request) \
+            or self.is_pageable(request):
+                albums = self.filter(request)
+            else:
+                albums = self.getall(request)
             return response.json(albums.serialize())
         except:
-            return response.json({})
+            return response.json(self.empty())
 
     def show(self, id, response: Response):
         album = self.album_repository.get_by_id(id)

@@ -34,6 +34,12 @@ class Repository(ABC):
     
     def count(self) -> int:
         return self.model.count()
+    
+    def filter(self, filters: dict, sort_by: str=None, per_page: int=100, page: int=1):
+        return self.query().with_meta() \
+            .when(filters, lambda query: query.where(filters) ) \
+            .when(sort_by, lambda query: query.order_by(sort_by) ) \
+            .paginate(per_page, page)
 
     def __load_model(self):
         model_path, model_name = self.__guess_model_class()

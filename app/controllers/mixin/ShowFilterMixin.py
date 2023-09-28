@@ -1,10 +1,12 @@
 from masonite.request import Request
 from app.controllers.mixin import PaginatorMixin
 
-class SongFilterMixin(PaginatorMixin):
+class ShowFilterMixin(PaginatorMixin):
     
     def is_filterable(self, request: Request) -> bool:
-        if request.input('genre') \
+        if request.input('country') \
+        or request.input('city') \
+        or request.input('venue') \
         or request.input('is_free') \
         or request.input('is_published') \
         or request.input('sort'):
@@ -13,12 +15,18 @@ class SongFilterMixin(PaginatorMixin):
             return False
         
     def get_filters(self, request: Request) -> dict:
-        genre = request.input("genre") or None
+        country = request.input("country") or None
+        city = request.input("city") or None
+        venue = request.input("venue") or None
         is_free = request.input("is_free") or None
         is_published = request.input("is_published") or None
         filter = dict()
-        if genre is not None:
-            filter["genre_id"] = genre
+        if country is not None:
+            filter["country"] = country
+        if country is not None:
+            filter["city"] = city
+        if country is not None:
+            filter["venue"] = venue
         if is_free is not None:
             filter["is_free"] = bool(is_free)
         if is_published is not None:
@@ -28,4 +36,3 @@ class SongFilterMixin(PaginatorMixin):
     def get_sorter(self, request: Request) -> str:
         sort_by = request.input("sort") or None
         return sort_by
-    

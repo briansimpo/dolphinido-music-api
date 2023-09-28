@@ -40,10 +40,10 @@ class AlbumRepository(Repository, WorkFilterMixin):
             .order_by("song_downloads.download_count", "DESC") \
             .paginate(per_page, page)
 
-    def get_by_artist(self, artist_id, per_page=20, page=1):
+    def get_by_artist(self, artist_id):
         return self.query().with_meta()\
             .where("albums.artist_id", artist_id)\
-            .paginate(per_page, page)
+            .get()
     
     def count_by_artist(self, artist_id):
         return self.query().where("albums.artist_id", artist_id).count()

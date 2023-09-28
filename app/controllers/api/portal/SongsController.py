@@ -21,12 +21,24 @@ class SongsController(Controller, SongFilterMixin, EmptyMixin):
         user = request.user()
         songs = self.song_repository.get_by_artist(user.id)
         return songs
+    
+    def filter(self, request: Request):
+        user = request.user()
+        filters = self.get_filters(request)
+        sort_by = self.get_sorter(request)
+        per_page = self.get_per_page(request)
+        page = self.get_page(request)
+    
+        filters["artist_id"]=user.id
+        
+        songs = self.song_repository.filter(filters, sort_by, per_page,page)
+        return songs
 
     def index(self, request: Request, response: Response):
         try:
             if self.is_filterable(request) \
             or self.is_pageable(request):
-                songs = self.filter_by_owner(request)
+                songs = self.filter(request)
             else:
                 songs = self.getall(request)
             return response.json(songs.serialize())
