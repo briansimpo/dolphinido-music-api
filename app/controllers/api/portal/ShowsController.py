@@ -92,7 +92,7 @@ class ShowsController(Controller, ShowFilterMixin):
 
     def destroy(self, id, response: Response):
         show = self.show_repository.get_by_id(id)
-        old_image = show.cover_image
+        old_image = show.image_path
         show.delete()
         self.image_service.delete(old_image)
         return response.json(payload={"message": "show deleted"}, status=204)

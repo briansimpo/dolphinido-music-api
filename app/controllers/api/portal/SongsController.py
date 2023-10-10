@@ -92,8 +92,8 @@ class SongsController(Controller, SongFilterMixin):
 
     def destroy(self, id, response: Response, queue: Queue):
         song = self.song_repository.get_by_id(id)
-        old_file = song.filepath
-        old_image = song.cover_image
+        old_file = song.file_path
+        old_image = song.image_path
         song.delete()
 
         self.file_service.delete(old_file)

@@ -77,7 +77,7 @@ class AlbumsController(Controller, AlbumFilterMixin):
 
     def destroy(self, id, response: Response):
         album = self.album_repository.get_by_id(id)
-        old_image = album.cover_image
+        old_image = album.image_path
         album.delete()
         self.image_service.delete(old_image)
 
